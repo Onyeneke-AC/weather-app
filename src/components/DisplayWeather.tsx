@@ -8,10 +8,29 @@ import { RiLoaderFill } from 'react-icons/ri';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 import axios from 'axios';
 
+interface WeatherDataProps {
+    name: string,
+    main : {
+        temp: number,
+        humidity: number,
+    },
+    sys: {
+        country: string,
+    },
+    weather: {
+        main: string,
+    }[],
+    wind: {
+        speed: number,
+    }
+}
+
 function DisplayWeather() {
 
     const api_key = "0cc86d16bf572f78cdc96c096c7627e5";
     const api_Endpoint = "https://api.openweathermap.org/data/2.5/";
+
+    const [weatherData, setWeatherData] = React.useState<WeatherDataProps | null>(null);
 
     const fetchCurrentWeather = async (lat: number, lon: number) => {
         const url = `${api_Endpoint}weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`;
@@ -43,33 +62,40 @@ function DisplayWeather() {
             </div>
         </div>
 
-        <div className="weatherArea">
-            <h1>Auckland</h1>
-            <span>Nz</span>
-            <div className="icon">
-                icon
-            </div>
-            <h1>18c</h1>
-            <h2>cloudy</h2>
+        {
+            weatherData && (
+            <> 
+                <div className="weatherArea">
+                    <h1>Auckland</h1>
+                    <span>Nz</span>
+                    <div className="icon">
+                        icon
+                    </div>
+                    <h1>18c</h1>
+                    <h2>cloudy</h2>
+                </div>
+        
+                <div className="bottomInfoArea">
+                    <div className="humidityLevel">
+                        <WiHumidity className='windIcon'/>
+                        <div className="humidInfo">
+                            <h1>60%</h1>
+                            <p>Humidity</p> 
+                        </div>
+                    </div>
+                    <div className="wind">
+                        <SiWindicss className="windIcon"/>
+                        <div className="humidInfo">
+                            <h1>2.35km</h1>
+                            <p>Wind Speed</p> 
+                        </div>
+                    </div>
+                </div>
+            </>
+            )
+        }
         </div>
 
-        <div className="bottomInfoArea">
-            <div className="humidityLevel">
-                <WiHumidity className='windIcon'/>
-                <div className="humidInfo">
-                    <h1>60%</h1>
-                    <p>Humidity</p> 
-                </div>
-            </div>
-            <div className="wind">
-                <SiWindicss className="windIcon"/>
-                <div className="humidInfo">
-                    <h1>2.35km</h1>
-                    <p>Wind Speed</p> 
-                </div>
-            </div>
-        </div>
-      </div>
     </WeatherWrapper>
   )
 }
