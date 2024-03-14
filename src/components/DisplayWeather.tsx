@@ -31,12 +31,73 @@ function DisplayWeather() {
     const api_Endpoint = "https://api.openweathermap.org/data/2.5/";
 
     const [weatherData, setWeatherData] = React.useState<WeatherDataProps | null>(null);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [searchCity, setSearchCity] = React.useState("");
 
     const fetchCurrentWeather = async (lat: number, lon: number) => {
         const url = `${api_Endpoint}weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`;
 
         const res = await axios.get(url);
         return res.data;
+    };
+
+    const fetchWeatherData = async (city: string) => {
+        try {
+            const url = `${api_Endpoint}weather?q=${city}&appid=${api_key}&units=metric`;
+            const searchRes = await axios.get(url);
+
+            const currentWeatherData : WeatherDataProps = searchRes.data;
+            return {currentWeatherData};
+        } catch (error) {
+            console.error("No data found");
+            throw error;
+        };
+    };
+
+    const handleSearch = async () => {
+        if (searchCity.trim() === "" ){
+            return;
+        }
+        try {
+            const { currentWeatherData } = await fetchWeatherData(searchCity);
+            setWeatherData(currentWeatherData);
+        } catch (error) {
+            console.error("No results found");
+        }
+    }
+
+    const iconChanger = (weather: string) => {
+        
+        let iconElement: React.ReactNode;
+        let iconColor: string;
+
+        switch (weather) {
+            case "Rain":
+                iconElement = <BsFillCloudRainFill />
+                iconColor ='#271829';
+                break;
+            case "Clear":
+                iconElement = <BsFillSunFill />
+                iconColor ='#FFC436';
+                break;
+            case "Clouds":
+                iconElement = <BsCloudyFill />
+                iconColor ='#102C57';
+                break;
+            case "Mist":
+                iconElement = <BsCloudFog2Fill />
+                iconColor ='#279EFF';
+                break;
+            default:
+                iconElement = <TiWeatherPartlySunny />
+                iconColor ='#7B2869';
+        }
+
+        return (
+            <span className="icon" style={{color: iconColor}}>
+                {iconElement}
+            </span>
+        )
     }
 
     React.useEffect(() => {
@@ -45,7 +106,8 @@ function DisplayWeather() {
             Promise.all([fetchCurrentWeather(latitude, longitude)])
             .then(
                 ([currentWeather]) => {
-                    console.log(currentWeather);
+                    setWeatherData(currentWeather);
+                    setIsLoading(true);
                 }
             ) 
         })
@@ -56,42 +118,48 @@ function DisplayWeather() {
       <div className="container">
 
         <div className="searchArea">
-            <input type="text" placeholder="Search City..." />
+            <input type="text" placeholder="Search City..." value={searchCity} onChange={
+                (e) => setSearchCity(e.target.value)}/>
             <div className="searchCircle">
-                <AiOutlineSearch className='searchIcon'/>
+                <AiOutlineSearch className='searchIcon' onClick={handleSearch}/>
             </div>
         </div>
 
         {
-            weatherData && (
+            weatherData && isLoading ? (
             <> 
                 <div className="weatherArea">
-                    <h1>Auckland</h1>
-                    <span>Nz</span>
+                    <h1>{weatherData.name}</h1>
+                    <span>{weatherData.sys.country}</span>
                     <div className="icon">
-                        icon
+                        {iconChanger(weatherData.weather[0].main)}
                     </div>
-                    <h1>18c</h1>
-                    <h2>cloudy</h2>
+                    <h1>{weatherData.main.temp}</h1>
+                    <h2>{weatherData.weather[0].main}</h2>
                 </div>
         
                 <div className="bottomInfoArea">
                     <div className="humidityLevel">
                         <WiHumidity className='windIcon'/>
                         <div className="humidInfo">
-                            <h1>60%</h1>
+                            <h1>{weatherData.main.humidity}%</h1>
                             <p>Humidity</p> 
                         </div>
                     </div>
                     <div className="wind">
                         <SiWindicss className="windIcon"/>
                         <div className="humidInfo">
-                            <h1>2.35km</h1>
+                            <h1>{weatherData.wind.speed}</h1>
                             <p>Wind Speed</p> 
                         </div>
                     </div>
                 </div>
             </>
+            ) : (
+               <div className="loading">
+                <RiLoaderFill className='loadingIcon' />
+                <p>Loading</p>
+               </div> 
             )
         }
         </div>

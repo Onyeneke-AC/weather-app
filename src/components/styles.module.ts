@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const WeatherWrapper = styled.div`
 height: 100vh;
 background: linear-gradient(to right, #c7c7eb, #ccf2dd);
+
 .container {
 background-color: #ffffff7d;
 border-radius: 12px;
