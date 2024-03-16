@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsFillSunFill, BsCloudyFill, BsFillCloudRainFill, BsCloudFog2Fill } from 'react-icons/bs';
 import { TiWeatherPartlySunny } from 'react-icons/ti';
 

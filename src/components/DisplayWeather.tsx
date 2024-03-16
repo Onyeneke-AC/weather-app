@@ -19,12 +19,6 @@ function DisplayWeather() {
     const sky = useSearchWeather(place);
     const geo = useLatLonWeather(lat, lon);
 
-    // React.useEffect(() => {
-    //     if (sky.data) {
-    //         setWeatherData(sky.data);
-    //     }
-    // }, [sky.data]);
-
     const handleSearch = () => {
         if (searchCity.trim() === "" ){
             return;
@@ -55,7 +49,7 @@ function DisplayWeather() {
             setLat(latitude);
             setLon(longitude); 
         })
-    })
+    }, []);
 
   return (
     <WeatherWrapper>

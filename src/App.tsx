@@ -1,5 +1,3 @@
-import React from 'react';
-import './App.css';
 import DisplayWeather from './components/DisplayWeather';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

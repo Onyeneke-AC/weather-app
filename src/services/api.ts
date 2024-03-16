@@ -1,6 +1,5 @@
 import axios from "axios";
 import { WeatherDataProps } from '../types/index';
-// import { QueryFunction } from "@tanstack/react-query";
 
 const api_key = "0cc86d16bf572f78cdc96c096c7627e5";
 const api_Endpoint = "https://api.openweathermap.org/data/2.5/";
