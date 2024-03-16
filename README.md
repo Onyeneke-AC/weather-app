@@ -6,6 +6,6 @@ Once the project starts running on the development server, it first loads while 
 
 The initial weather data displayed contains the weather conditions of your current location.
 
-A seacrch box is provided to check the weather conditions of other places as long as the searched location is real.
+A search box is provided to check the weather conditions of other places as long as the searched location is real.
 
 Styled components was used for the styling of this project.
