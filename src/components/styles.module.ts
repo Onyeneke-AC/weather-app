@@ -2,21 +2,22 @@ import styled from "styled-components";
 
 
 export const WeatherWrapper = styled.div`
-height: 100vh;
+height: 120vh;
 background: linear-gradient(to right, #c7c7eb, #ccf2dd);
+display: flex;
+align-items: center;
+justify-content: space-around;
 
 .container {
 background-color: #ffffff7d;
 border-radius: 12px;
 padding: 1rem;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
+margin: auto 0;
 box-shadow: 0 10px 15px rgb(0 0 0 / 20%);
 box-sizing: border-box;
 color: rgba(0, 0, 0, 0.8);
 background-blend-mode: overlay;
+display: flex;
 justify-content: space-between;
 align-items: center;
 flex-direction: column;

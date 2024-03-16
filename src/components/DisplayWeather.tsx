@@ -4,38 +4,54 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { WiHumidity } from 'react-icons/wi';
 import { SiWindicss } from 'react-icons/si';
 import { RiLoaderFill } from 'react-icons/ri';
-import { fetchCurrentWeather, fetchWeatherData } from '../apiCalls/searchAndCurrent';
 import { WeatherDataProps } from '../types/index';
 import { iconChanger } from './iconChanger';
+import { useLatLonWeather, useSearchWeather } from '../services/queries';
 
 function DisplayWeather() {
 
     const [weatherData, setWeatherData] = React.useState<WeatherDataProps | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [searchCity, setSearchCity] = React.useState("");
+    const [lat, setLat] = React.useState<number>();
+    const [lon, setLon] = React.useState<number>();
+    const sky = useSearchWeather(searchCity);
+    const geo = useLatLonWeather(lat, lon);
 
-    const handleSearch = async () => {
+    React.useEffect(() => {
+        if (sky.data) {
+            setWeatherData(sky.data);
+        }
+    }, [sky.data]);
+
+    const handleSearch = () => {
         if (searchCity.trim() === "" ){
             return;
         }
         try {
-            const { currentWeatherData } = await fetchWeatherData(searchCity);
-            setWeatherData(currentWeatherData);
-        } catch (error) {
+            if(!sky.isLoading && sky.data !== undefined){
+                setWeatherData(sky.data);
+            } 
+        }catch (error) {
             console.error("No results found");
         }
     }
 
+
+    React.useEffect(() => {
+        if (geo.data) {
+            setWeatherData(geo.data);
+            setIsLoading(true);
+        }
+    }, [geo.data, lat, lon]);
+
+
     React.useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             const {latitude, longitude} = position.coords;
-            Promise.all([fetchCurrentWeather(latitude, longitude)])
-            .then(
-                ([currentWeather]) => {
-                    setWeatherData(currentWeather);
-                    setIsLoading(true);
-                }
-            ) 
+            
+            setLat(latitude);
+            setLon(longitude); 
         })
     })
 
