@@ -13,21 +13,23 @@ function DisplayWeather() {
     const [weatherData, setWeatherData] = React.useState<WeatherDataProps | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [searchCity, setSearchCity] = React.useState("");
+    const [place, setPlace] = React.useState("");
     const [lat, setLat] = React.useState<number>();
     const [lon, setLon] = React.useState<number>();
-    const sky = useSearchWeather(searchCity);
+    const sky = useSearchWeather(place);
     const geo = useLatLonWeather(lat, lon);
 
-    React.useEffect(() => {
-        if (sky.data) {
-            setWeatherData(sky.data);
-        }
-    }, [sky.data]);
+    // React.useEffect(() => {
+    //     if (sky.data) {
+    //         setWeatherData(sky.data);
+    //     }
+    // }, [sky.data]);
 
     const handleSearch = () => {
         if (searchCity.trim() === "" ){
             return;
         }
+        setPlace(searchCity);
         try {
             if(!sky.isLoading && sky.data !== undefined){
                 setWeatherData(sky.data);
