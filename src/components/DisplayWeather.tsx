@@ -106,4 +106,7 @@ function DisplayWeather() {
   )
 }
 
+// Try using useRef for the search feature
+// check whether we can make use of useReducer too
+
 export default DisplayWeather
