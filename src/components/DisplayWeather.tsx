@@ -18,7 +18,6 @@ function DisplayWeather() {
     const [lon, setLon] = React.useState<number>();
     const sky = useSearchWeather(place);
     const geo = useLatLonWeather(lat, lon);
-    const subSearch = useRef()
 
     const handleSearch = () => {
         if (searchCity.trim() === "" ){
