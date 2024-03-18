@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { WeatherWrapper } from './styles.module'
 import { AiOutlineSearch } from 'react-icons/ai';
 import { WiHumidity } from 'react-icons/wi';
